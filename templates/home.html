@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-8 py-20 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+  <!-- 左侧文字 -->
+  <div>
+    <h1 class="text-6xl lg:text-7xl font-semibold tracking-tighter leading-none text-zinc-900">
+      Mein Weg zur Deutschland
+    </h1>
+    <p class="mt-6 text-2xl text-zinc-600">
+      Von China nach Berlin • Deutsch lernen & Coding
+    </p>
+    
+    <div class="mt-10 text-xl text-zinc-700">
+      Hallo! Ich bin Sally.<br>
+      Hier dokumentiere ich meinen Weg von China nach Deutschland.
+    </div>
+
+    <a href="{% url 'posts:germany_list' %}" 
+       class="inline-block mt-12 px-8 py-4 bg-zinc-900 hover:bg-black text-white text-lg font-medium rounded-2xl transition-colors">
+      → Deutschland verstehen
+    </a>
+  </div>
+
+  <!-- 右侧照片 -->
+  <div class="flex justify-center lg:justify-end">
+    <img src="{% static 'images/sally-profile.jpg' %}" 
+         alt="Sally"
+         class="rounded-3xl shadow-2xl max-w-[420px] w-full object-cover">
+  </div>
+
+</div>
+{% endblock %}

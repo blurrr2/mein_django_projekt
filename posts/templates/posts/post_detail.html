@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<section class="max-w-4xl mx-auto px-8 py-12">
+
+    <h1 class="text-4xl font-semibold mb-6">{{ post.title }}</h1>
+
+    {% if post.image %}
+        <img src="{{ post.image.url }}" alt="{{ post.title }}" 
+             class="w-full max-h-96 object-cover rounded-3xl mb-8 shadow-xl">
+    {% endif %}
+
+    <small class="text-zinc-500 block mb-10">
+        Published on {{ post.date|date:"Y-m-d" }}
+    </small>
+
+    <!-- 优化后的正文：同时支持 HTML + 自动换行 -->
+    <article class="prose text-zinc-700 leading-relaxed">
+        {{ post.body|safe|linebreaks }}
+    </article>
+
+    <style>
+  .code-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8f9fa;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 16px 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 15px;
+    color: #24292f;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  .code-block code {
+    flex: 1;
+    white-space: pre;
+    overflow-x: auto;
+    background: transparent;
+    padding: 0;
+  }
+  .copy-btn {
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    color: #57606a;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-left: 16px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+  .copy-btn:hover {
+    background: #f6f8fa;
+    border-color: #b5b5b5;
+    color: #24292f;
+  }
+  .copy-btn.copied {
+    background: #2ea44f;
+    color: #ffffff;
+    border-color: #2ea44f;
+  }
+</style>
+
+<script>
+  function copyCode(btn) {
+    const codeBlock = btn.parentElement;
+    const codeText = codeBlock.querySelector('code').innerText.trim();
+    
+    navigator.clipboard.writeText(codeText).then(() => {
+      const originalText = btn.textContent;
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+</script>
+
+    <hr class="my-12">
+
+    <a href="{% url 'posts:germany_list' %}" 
+       class="inline-flex items-center gap-2 text-zinc-600 hover:text-black transition-colors">
+        ← Zurück zur Übersicht
+    </a>
+
+</section>
+{% endblock %}

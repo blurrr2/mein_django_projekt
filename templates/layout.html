@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <title>{% block title %}Sallys Journey{% endblock %}</title>
+</head>
+<body class="bg-white font-sans">
+
+    <!-- 导航栏 -->
+    <nav class="max-w-7xl mx-auto px-10 py-6 flex items-center justify-between border-b">
+        <a href="{% url 'home' %}" class="text-3xl font-semibold tracking-tighter">Sally</a>
+        
+        <div class="flex items-center gap-x-10 text-lg">
+            <a href="{% url 'posts:germany_list' %}" class="hover:text-zinc-500 transition-colors">Deutschland</a>
+            <a href="{% url 'posts:german_learning_list' %}" class="hover:text-zinc-500 transition-colors">Deutsch lernen</a>
+            <a href="{% url 'posts:coding_list' %}" class="hover:text-zinc-500 transition-colors">Coding</a>
+        </div>
+    </nav>
+
+    <!-- 页面主要内容 -->
+    {% block content %}
+    {% endblock %}
+
+</body>
+</html>
