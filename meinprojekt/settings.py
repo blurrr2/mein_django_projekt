@@ -12,6 +12,16 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os
 from pathlib import Path
 
+# Load .env file manually (no third-party dependency needed)
+_env_path = Path(__file__).resolve().parent.parent / '.env'
+if _env_path.exists():
+    with open(_env_path) as _f:
+        for _line in _f:
+            _line = _line.strip()
+            if _line and not _line.startswith('#') and '=' in _line:
+                _key, _, _val = _line.partition('=')
+                os.environ.setdefault(_key.strip(), _val.strip())
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,12 +30,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-duqs24w@!y^w!q6xowzhe656^%298du4gt7#uobgr_))y@d^ew"
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-duqs24w@!y^w!q6xowzhe656^%298du4gt7#uobgr_))y@d^ew')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',') if os.getenv('ALLOWED_HOSTS') else []
 
 
 # Application definition
@@ -55,7 +65,6 @@ INSTALLED_APPS = [
     'taggit',
 
     # 您自己的 App
-    'meine_app',
     'posts',
 ]
 
@@ -138,6 +147,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
+STATIC_ROOT = BASE_DIR / 'static_collected'
 
 WAGTAIL_SITE_NAME = 'Mein Django Projekt'
 

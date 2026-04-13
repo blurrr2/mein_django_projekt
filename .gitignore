@@ -2,3 +2,8 @@
 /images
 /media
 /venv
+.env
+*.pyc
+__pycache__/
+*.bak
+/static_collected/

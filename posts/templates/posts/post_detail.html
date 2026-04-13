@@ -1,70 +1,90 @@
 {% extends "layout.html" %}
 
-{% block title %}{{ post.title }}{% endblock %}
-
 {% block content %}
 <section class="max-w-4xl mx-auto px-8 py-12">
-
-    <h1 class="text-4xl font-semibold mb-6">{{ post.title }}</h1>
-
-    {% if post.image %}
-        <img src="{{ post.image.url }}" alt="{{ post.title }}" 
+    {% if post.featured_image %}
+        <img src="{{ post.featured_image.url }}" 
+             alt="{{ post.title }}" 
              class="w-full max-h-96 object-cover rounded-3xl mb-8 shadow-xl">
     {% endif %}
 
     <small class="text-zinc-500 block mb-10">
-        Published on {{ post.date|date:"Y-m-d" }}
+        Published on {{ post.publish_date|date:"Y-m-d" }}
     </small>
 
-    <!-- 优化后的正文：同时支持 HTML + 自动换行 -->
-    <article class="prose text-zinc-700 leading-relaxed">
-        {{ post.body|safe|linebreaks }}
+    <article class="prose text-zinc-700 leading-relaxed max-w-none">
+        {{ post.body|safe }}
     </article>
 
-    <style>
+    <hr class="my-12">
+
+    {% if post.category == 'germany' %}
+        <a href="{% url 'posts:germany_list' %}"
+           class="inline-flex items-center text-zinc-500 hover:text-zinc-700">
+            ← Back to Deutschland verstehen
+        </a>
+    {% elif post.category == 'german-learning' %}
+        <a href="{% url 'posts:german_learning_list' %}"
+           class="inline-flex items-center text-zinc-500 hover:text-zinc-700">
+            ← Back to Deutsch lernen
+        </a>
+    {% elif post.category == 'coding' %}
+        <a href="{% url 'posts:coding_list' %}"
+           class="inline-flex items-center text-zinc-500 hover:text-zinc-700">
+            ← Back to Coding Journey
+        </a>
+    {% else %}
+        <a href="{% url 'home' %}"
+           class="inline-flex items-center text-zinc-500 hover:text-zinc-700">
+            ← Back to Home
+        </a>
+    {% endif %}
+</section>
+
+<!-- 代码块样式 + Copy 按钮 -->
+<style>
   .code-block {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #f8f9fa;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 12px 16px;
-    margin: 16px 0;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 15px;
-    color: #24292f;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background: #f8f9fa !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    padding: 12px 16px !important;
+    margin: 16px 0 !important;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+    font-size: 15px !important;
+    color: #24292f !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
   }
   .code-block code {
-    flex: 1;
-    white-space: pre;
-    overflow-x: auto;
-    background: transparent;
-    padding: 0;
+    flex: 1 !important;
+    white-space: pre !important;
+    overflow-x: auto !important;
+    background: transparent !important;
+    padding: 0 !important;
   }
   .copy-btn {
-    background: #ffffff;
-    border: 1px solid #d1d5db;
-    color: #57606a;
-    padding: 6px 14px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin-left: 16px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    background: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    color: #57606a !important;
+    padding: 6px 14px !important;
+    border-radius: 6px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    margin-left: 16px !important;
   }
   .copy-btn:hover {
-    background: #f6f8fa;
-    border-color: #b5b5b5;
-    color: #24292f;
+    background: #f6f8fa !important;
+    border-color: #b5b5b5 !important;
+    color: #24292f !important;
   }
   .copy-btn.copied {
-    background: #2ea44f;
-    color: #ffffff;
-    border-color: #2ea44f;
+    background: #2ea44f !important;
+    color: #ffffff !important;
+    border-color: #2ea44f !important;
   }
 </style>
 
@@ -72,12 +92,10 @@
   function copyCode(btn) {
     const codeBlock = btn.parentElement;
     const codeText = codeBlock.querySelector('code').innerText.trim();
-    
     navigator.clipboard.writeText(codeText).then(() => {
       const originalText = btn.textContent;
       btn.textContent = 'Copied!';
       btn.classList.add('copied');
-      
       setTimeout(() => {
         btn.textContent = originalText;
         btn.classList.remove('copied');
@@ -85,13 +103,4 @@
     });
   }
 </script>
-
-    <hr class="my-12">
-
-    <a href="{% url 'posts:germany_list' %}" 
-       class="inline-flex items-center gap-2 text-zinc-600 hover:text-black transition-colors">
-        ← Zurück zur Übersicht
-    </a>
-
-</section>
-{% endblock %}
+{% endblock content %}

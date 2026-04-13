@@ -1,12 +1,18 @@
 from django.db import models
+from wagtail.models import Page
+from wagtail.fields import RichTextField, StreamField
+from wagtail.blocks import RichTextBlock, RawHTMLBlock
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.images.models import Image
 
-class Post(models.Model):
-    title = models.CharField(max_length=200)
-    body = models.TextField()
-    date = models.DateField(auto_now_add=True)
-    slug = models.SlugField(unique=True)
-    image = models.ImageField(upload_to='images/', blank=True, null=True)
-    
+
+class Post(Page):
+    """Wagtail Post Page"""
+
+    template = "posts/post_detail.html"
+
+    publish_date = models.DateField("Publish Date")
+
     category = models.CharField(
         max_length=50,
         choices=[
@@ -14,22 +20,39 @@ class Post(models.Model):
             ('german-learning', 'deutsch lernen'),
             ('coding', 'coding journey'),
         ],
-        default='coding'
+        default='coding',
+        verbose_name="Category"
     )
+
+    featured_image = models.ForeignKey(
+        Image,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+',
+        verbose_name="Featured Image"
+    )
+
+    body = StreamField([
+        ('rich_text', RichTextBlock(
+            features=['h2', 'h3', 'h4', 'bold', 'italic', 'link', 'code', 'image', 'hr', 'blockquote'],
+            label="Rich Text"
+        )),
+        ('raw_html', RawHTMLBlock(label="Raw HTML")),
+    ], blank=True, use_json_field=True, verbose_name="Body")
+
+    content_panels = Page.content_panels + [
+        MultiFieldPanel([
+            FieldPanel('publish_date'),
+            FieldPanel('category'),
+            FieldPanel('featured_image'),
+        ], heading="Post Information"),
+        FieldPanel('body'),
+    ]
+
+    class Meta:
+        verbose_name = "Blog Post"
+        verbose_name_plural = "Blog Posts"
 
     def __str__(self):
         return self.title
-
-
-# ==================== 新增：支持一篇文章多张图片 ====================
-class PostImage(models.Model):
-    post = models.ForeignKey(
-        Post, 
-        on_delete=models.CASCADE, 
-        related_name='images'
-    )
-    image = models.ImageField(upload_to='images/')
-    caption = models.CharField(max_length=200, blank=True, null=True)
-
-    def __str__(self):
-        return f"Image for {self.post.title}"

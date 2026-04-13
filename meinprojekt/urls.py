@@ -5,25 +5,31 @@ from django.conf.urls.static import static
 
 from meinprojekt.views import homepage, about
 
+# Wagtail
+from wagtail.admin import urls as wagtailadmin_urls
+from wagtail import urls as wagtail_urls
+from wagtail.documents import urls as wagtaildocs_urls
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # Django 传统 admin（可选，改名避免冲突）
+    path('django-admin/', admin.site.urls),
+
+    # Wagtail 管理后台（最重要的）
+    path('admin/', include(wagtailadmin_urls)),
+
+    # Wagtail 文档
+    path('documents/', include(wagtaildocs_urls)),
+
+    # 你的文章分类路由（必须放在 Wagtail catch-all 之前）
+    path('', include('posts.urls', namespace='posts')),
 
     # 首页
     path('', homepage, name='home'),
-    
-    # 德国了解（直接用 posts app 处理）
-    path('germany/', include('posts.urls')),
-    
-    # 德语学习
-    path('german-learning/', include('posts.urls')),
-    
-    # 编程学习
-    path('coding/', include('posts.urls')),
 
-    # 如果以后想保留原来的 /posts/ 列表页，也可以保留
-    # path('posts/', include('posts.urls')),
+    # Wagtail 页面路由（必须放在最后！）
+    path('', include(wagtail_urls)),
 ]
 
-# 开发环境下允许访问上传的图片
+# 开发环境下允许访问媒体文件
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
