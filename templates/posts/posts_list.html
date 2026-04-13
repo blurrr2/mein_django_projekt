@@ -15,12 +15,17 @@
             <p class="text-muted">
                 {{ post.date|date:"Y-m-d" }} · {{ post.get_category_display|default:post.category }}
             </p>
-            <p>{{ post.body|truncatewords:60|safe }}</p>
-            <a href="{% url 'post_detail' post.slug %}" class="btn btn-primary">阅读全文 →</a>
+            
+            <!-- 修复后的 Body 显示（兼容 StreamField + Raw HTML） -->
+            <div class="post-preview">
+                {{ post.body|striptags|truncatewords:60 }}
+            </div>
+            
+            <a href="{% url 'post_detail' post.slug %}" class="btn btn-primary">READ ARTICLE →</a>
         </div>
     </div>
     {% empty %}
-    <p>暂无文章</p>
+    <p>NO ARTICLE</p>
     {% endfor %}
 </div>
 {% endblock %}
