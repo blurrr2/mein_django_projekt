@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% load wagtailcore_tags %}   <!-- 必须加载 wagtailcore_tags，否则 pageurl 会报错 -->
 
 {% block title %}{{ title }}{% endblock %}
 
@@ -16,16 +17,16 @@
                 {{ post.date|date:"Y-m-d" }} · {{ post.get_category_display|default:post.category }}
             </p>
             
-            <!-- 兼容 StreamField 的预览 -->
+            <!-- 文章预览内容（兼容 StreamField） -->
             <div class="post-preview">
                 {{ post.body|striptags|truncatewords:60 }}
             </div>
             
-            <a href="{% pageurl post %}" class="btn btn-primary">READ ARTICLE →</a>
+            <a href="{% pageurl post %}" class="btn btn-primary">Read More →</a>
         </div>
     </div>
     {% empty %}
-    <p>NO ARTICLE</p>
+    <p>No articles found.</p>
     {% endfor %}
 </div>
 {% endblock %}
