@@ -1,19 +1,23 @@
 {% extends 'layout.html' %}
+{% load wagtailcore_tags %}   <!-- 必须加载 -->
 
-{% block title %}{{ post.title }}{% endblock %}
+{% block title %}{{ self.title }}{% endblock %}
 
 {% block content %}
 <div class="container my-5">
-    <h1>{{ post.title }}</h1>
+    <h1>{{ self.title }}</h1>
+    
     <p class="text-muted">
-        {{ post.date|date:"Y-m-d" }} · {{ post.get_category_display|default:post.category }}
+        {{ self.date|date:"Y-m-d" }} · 
+        {{ self.get_category_display|default:self.category }}
     </p>
     
+    <!-- 文章正文（支持 Raw HTML 和 StreamField） -->
     <div class="post-body">
-        {{ post.body|safe }}
+        {{ self.body }}
     </div>
     
     <hr>
-    <a href="/{{ post.category }}/" class="btn btn-secondary">← 返回列表</a>
+    <a href="{% url 'german_learning_list' %}" class="btn btn-secondary">← 返回列表</a>
 </div>
 {% endblock %}
