@@ -10,18 +10,18 @@
     <div class="card mb-4">
         <div class="card-body">
             <h2>
-                <a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a>
+                <a href="{% pageurl post %}">{{ post.title }}</a>
             </h2>
             <p class="text-muted">
                 {{ post.date|date:"Y-m-d" }} · {{ post.get_category_display|default:post.category }}
             </p>
             
-            <!-- 修复后的 Body 显示（兼容 StreamField + Raw HTML） -->
+            <!-- 兼容 StreamField 的预览 -->
             <div class="post-preview">
                 {{ post.body|striptags|truncatewords:60 }}
             </div>
             
-            <a href="{% url 'post_detail' post.slug %}" class="btn btn-primary">READ ARTICLE →</a>
+            <a href="{% pageurl post %}" class="btn btn-primary">READ ARTICLE →</a>
         </div>
     </div>
     {% empty %}
