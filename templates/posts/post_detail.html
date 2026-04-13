@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1>{{ post.title }}</h1>
+    <p class="text-muted">
+        {{ post.date|date:"Y-m-d" }} · {{ post.get_category_display|default:post.category }}
+    </p>
+    
+    <div class="post-body">
+        {{ post.body|safe }}
+    </div>
+    
+    <hr>
+    <a href="/{{ post.category }}/" class="btn btn-secondary">← 返回列表</a>
+</div>
+{% endblock %}
