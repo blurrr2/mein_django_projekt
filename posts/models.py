@@ -1,13 +1,14 @@
 from django.db import models
 from wagtail.models import Page
-from wagtail.fields import RichTextField
+from wagtail.fields import StreamField
+from wagtail.blocks import RichTextBlock, RawHTMLBlock
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
-from wagtail.images.blocks import ImageChooserBlock   # 可选
+from wagtail.images.blocks import ImageChooserBlock
 
 class Post(Page):
-    """Wagtail 博客文章模型"""
+    """Wagtail 博客文章模型（支持 Raw HTML 块）"""
 
-    date = models.DateField("date", auto_now_add=False)
+    date = models.DateField("date published")
     category = models.CharField(
         max_length=50,
         choices=[
@@ -24,9 +25,13 @@ class Post(Page):
         on_delete=models.SET_NULL,
         related_name='+'
     )
-    body = RichTextField("body", blank=True)
+    
+    # ← 这里改成 StreamField，支持 Raw HTML 块
+    body = StreamField([
+        ('rich_text', RichTextBlock()),
+        ('raw_html', RawHTMLBlock()),      # ← 新增 Raw HTML 块
+    ], use_json_field=True, blank=True)
 
-    # Wagtail 后台编辑面板
     content_panels = Page.content_panels + [
         MultiFieldPanel([
             FieldPanel('date'),
@@ -36,8 +41,8 @@ class Post(Page):
         FieldPanel('body'),
     ]
 
-    template = "posts/post_detail.html"   # 使用你已有的模板
+    template = "posts/post_detail.html"
 
     class Meta:
-        verbose_name = "Blog Post"
-        verbose_name_plural = "Blog Posts"
+        verbose_name = "blog post"
+        verbose_name_plural = "blog posts"
