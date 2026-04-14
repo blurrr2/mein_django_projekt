@@ -5,33 +5,27 @@
 
 {% block content %}
 <div class="container my-5">
-    <h1 class="mb-5 text-center">{{ title }}</h1>
+    <h1 class="mb-5">{{ title }}</h1>
     
     {% for post in posts %}
-    <div class="card mb-5 shadow-sm mx-auto" style="max-width: 720px;">
-        <div class="card-body py-4">
+    <div class="card mb-5 shadow-sm" style="max-width: 680px; margin: 0 auto;">
+        <div class="card-body py-4 px-4">
             
-            <!-- 标题（加粗 + 稍微居中） -->
-            <h2 class="text-center mb-2">
+            <!-- 标题：加粗 + 更好看的字体 + 左对齐 -->
+            <h2 style="font-family: Georgia, 'Times New Roman', serif; font-weight: 700; font-size: 1.65rem; line-height: 1.3;">
                 <a href="{% pageurl post %}" class="text-decoration-none text-dark">
                     {{ post.title }}
                 </a>
             </h2>
             
             <!-- 日期 -->
-            <p class="text-muted text-center mb-0">
+            <p class="text-muted mt-2 mb-0" style="font-size: 0.95rem;">
                 {{ post.date|date:"Y-m-d" }}
             </p>
-            
-            <div class="text-center mt-4">
-                <a href="{% pageurl post %}" class="btn btn-primary">
-                    READ ARTICLE →
-                </a>
-            </div>
         </div>
     </div>
     {% empty %}
-    <p class="text-center text-muted">NO ARTICLES</p>
+    <p class="text-center text-muted">No Articles</p>
     {% endfor %}
 </div>
 {% endblock %}
