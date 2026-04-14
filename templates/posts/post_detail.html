@@ -7,17 +7,21 @@
 <div class="container my-5">
     <div style="max-width: 760px; margin: 0 auto;">
 
-    <!-- 正文 -->
-    <div class="post-body" style="font-size: 1.13rem; line-height: 1.85; color: #222;">
+        <!-- 正文 -->
+        <div class="post-body" style="font-size: 1.13rem; line-height: 1.85; color: #222;">
             {{ self.body }}
         </div>
 
         <hr class="my-5">
 
-    <!-- 返回按钮 -->
-    <a href="{% pageurl self.get_parent %}" class="btn btn-outline-secondary">
-        ← Return 
-    </a>
+        <!-- 返回按钮：居中 + 返回上一个页面 -->
+        <div class="text-center">
+            <a href="javascript:history.back()" 
+               class="btn btn-outline-secondary px-4 py-2">
+                ← Return
+            </a>
+        </div>
 
+    </div>
 </div>
 {% endblock %}
