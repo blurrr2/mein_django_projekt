@@ -5,31 +5,33 @@
 
 {% block content %}
 <div class="container my-5">
-    <h1 class="mb-5">{{ title }}</h1>
+    <h1 class="mb-5 text-center">{{ title }}</h1>
     
     {% for post in posts %}
-    <div class="card mb-4 shadow-sm">
-        <div class="card-body">
-            <h2>
-                <a href="{% pageurl post %}" class="text-decoration-none">{{ post.title }}</a>
+    <div class="card mb-5 shadow-sm mx-auto" style="max-width: 720px;">
+        <div class="card-body py-4">
+            
+            <!-- 标题（加粗 + 稍微居中） -->
+            <h2 class="text-center mb-2">
+                <a href="{% pageurl post %}" class="text-decoration-none text-dark">
+                    {{ post.title }}
+                </a>
             </h2>
             
-            <p class="text-muted small">
-                {{ post.date|date:"Y-m-d" }} · {{ post.get_category_display|default:post.category }}
+            <!-- 日期 -->
+            <p class="text-muted text-center mb-0">
+                {{ post.date|date:"Y-m-d" }}
             </p>
             
-            <!-- 优化后的预览文字（干净、有分段） -->
-            <div class="post-preview text-secondary">
-                {{ post.body|striptags|linebreaks|truncatewords:80 }}
+            <div class="text-center mt-4">
+                <a href="{% pageurl post %}" class="btn btn-primary">
+                    READ ARTICLE →
+                </a>
             </div>
-            
-            <a href="{% pageurl post %}" class="btn btn-primary mt-3">
-                READ ARTICLE →
-            </a>
         </div>
     </div>
     {% empty %}
-    <p class="text-center text-muted"> NO ARTICLE</p>
+    <p class="text-center text-muted">NO ARTICLES</p>
     {% endfor %}
 </div>
 {% endblock %}
