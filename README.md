@@ -92,8 +92,7 @@ mein_django_projekt/
 ## 🌟 Author
 
 **Sally**  
-From China → Living in Germany  
-Documenting my language learning, life in Germany, and coding journey.
+Documenting my language learning and coding journey.
 
 ---
 
@@ -105,4 +104,4 @@ This project is open-source and available under the [MIT License](LICENSE).
 
 **Made with ❤️ and lots of German learning motivation**
 
-需要我再加中文版本、或者加上项目截图、或者修改某些描述吗？随时告诉我！
+
