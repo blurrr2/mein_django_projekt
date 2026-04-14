@@ -1,33 +1,38 @@
 {% extends 'layout.html' %}
-{% load wagtailcore_tags %}   <!-- 必须有这一行 -->
+{% load wagtailcore_tags %}
 
 {% block title %}{{ self.title }}{% endblock %}
 
 {% block content %}
-<div class="container my-5">
-    <h1>{{ self.title }}</h1>
-    
-    <p class="text-muted">
-        {{ self.date|date:"Y-m-d" }} · 
-        {{ self.get_category_display|default:self.category }}
+<div class="container my-5" style="max-width: 760px;">
+
+    <!-- 小 badge（你想保留的框） -->
+    <div class="d-inline-flex align-items-center bg-light rounded-pill px-3 py-1 mb-3" style="font-size: 0.95rem;">
+        <span class="text-success me-1">✔</span>
+        {{ self.get_parent.title }}
+    </div>
+
+    <!-- 大标题（醒目、优雅） -->
+    <h1 style="font-family: Georgia, 'Times New Roman', serif; font-weight: 700; font-size: 2.45rem; line-height: 1.25; margin-bottom: 0.8rem;">
+        {{ self.title }}
+    </h1>
+
+    <!-- 日期 -->
+    <p class="text-muted mb-5" style="font-size: 1.05rem;">
+        {{ self.date|date:"Y-m-d" }}
     </p>
-    
-    <!-- 正文（支持 Raw HTML 和 StreamField） -->
-    <div class="post-body">
+
+    <!-- 正文 -->
+    <div class="post-body" style="font-size: 1.1rem; line-height: 1.8;">
         {{ self.body }}
     </div>
-    
-    <hr>
-    
-    <!-- 返回列表按钮（硬编码，避免 reverse 错误） -->
-    {% if self.category == 'german-learning' %}
-        <a href="/german-learning/" class="btn btn-secondary">← Return Deutsch lernen</a>
-    {% elif self.category == 'germany' %}
-        <a href="/germany/" class="btn btn-secondary">← Return Deutschland verstehen</a>
-    {% elif self.category == 'coding' %}
-        <a href="/coding/" class="btn btn-secondary">← Return Coding Journey</a>
-    {% else %}
-        <a href="/" class="btn btn-secondary">← Return Home</a>
-    {% endif %}
+
+    <hr class="my-5">
+
+    <!-- 返回按钮 -->
+    <a href="{% pageurl self.get_parent %}" class="btn btn-outline-secondary">
+        ← Return 
+    </a>
+
 </div>
 {% endblock %}
