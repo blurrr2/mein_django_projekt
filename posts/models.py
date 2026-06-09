@@ -27,7 +27,7 @@ class Post(Page):
     verbose_name="publish date",
     default=timezone.now,
 )
-    )
+    
     
     category = models.CharField(
         max_length=50,
