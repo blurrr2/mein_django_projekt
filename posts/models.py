@@ -3,33 +3,30 @@ from django.utils import timezone
 
 from wagtail.models import Page
 from wagtail.fields import StreamField
-# 1. 导入必要的 Panel
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel 
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 
 from wagtail.blocks import (
-    RichTextBlock, 
-    RawHTMLBlock,  
-    BlockQuoteBlock,  # 2. 修正引用块的名称
+    RichTextBlock,
+    RawHTMLBlock,
+    QuoteBlock,           # 修正为 QuoteBlock
 )
 
-# 3. 单独导入 TableBlock
 from wagtail.contrib.table_block.blocks import TableBlock
-
 from wagtail.images.blocks import ImageChooserBlock
 from wagtailmarkdown.blocks import MarkdownBlock
-
 from wagtail.embeds.blocks import EmbedBlock
 
-#from wagtailcodeblock.blocks import CodeBlock
-
+# 如果你安装了 wagtail-code-block，可以取消注释下面这行
+# from wagtailcodeblock.blocks import CodeBlock
 
 
 class Post(Page):
-    """Wagtail 博客文章模型（支持 Raw HTML 块）"""
+    """Wagtail 博客文章模型（支持多种格式）"""
 
-    date = models.DateField(
-        verbose_name="发布日期",
-        default=timezone.now,
+    publish_date = models.DateField(
+    verbose_name="publish date",
+    default=timezone.now,
+)
     )
     
     category = models.CharField(
@@ -53,26 +50,25 @@ class Post(Page):
     body = StreamField([
         ('rich_text', RichTextBlock(label="Rich text", icon="doc-full")),
         ('markdown', MarkdownBlock(label="Markdown", icon="code")),
-        # 如果没有安装代码块插件，建议先用 StructBlock 自己写一个，或者暂时注释掉：
-        #('code', CodeBlock(label="code", icon="code")),
-        ('image', ImageChooserBlock(label="image", icon="image")),
-        ('embed', EmbedBlock(label="media", icon="media")),
-        ('table', TableBlock(label="table", icon="table")),
-        ('quote', BlockQuoteBlock(label="quote", icon="openquote")), # 已修正为 BlockQuoteBlock
+        #('code', CodeBlock(label="Code", icon="code")) if 'CodeBlock' in globals() else None,  # 安全处理
+        ('image', ImageChooserBlock(label="Image", icon="image")),
+        ('embed', EmbedBlock(label="Embed media", icon="media")),
+        ('table', TableBlock(label="Table", icon="table")),
+        ('quote', QuoteBlock(label="Quote", icon="openquote")),
         ('raw_html', RawHTMLBlock(label="Raw HTML", icon="code")),
     ], use_json_field=True, blank=True)
 
     content_panels = Page.content_panels + [
-        MultiFieldPanel([
-            FieldPanel('date'),
-            FieldPanel('category'),
-            FieldPanel('featured_image'),
-        ], heading="article information"),
-        FieldPanel('body'),
-    ]
+    MultiFieldPanel([
+        FieldPanel('publish_date'),  # ← 改这里
+        FieldPanel('category'),
+        FieldPanel('featured_image'),
+    ], heading="Article Information"),
+    FieldPanel('body'),
+]
 
     template = "posts/post_detail.html"
 
     class Meta:
-        verbose_name = "blog post"
-        verbose_name_plural = "blog posts"
+        verbose_name = "Blog Post"
+        verbose_name_plural = "Blog Posts"
