@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'modelcluster',
     'taggit',
     'wagtailmarkdown',
+    'wagtailcodeblock',
     
 
     # 您自己的 App
@@ -159,3 +160,11 @@ WAGTAIL_SITE_NAME = 'Mein Django Projekt'
 MEDIA_URL = '/media/'                    # 浏览器访问图片的 URL 前缀
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')   # 图片实际保存在项目根目录下的 media 文件夹
 
+WAGTAIL_CODE_BLOCK_LANGUAGES = [
+    ('python', 'Python'),
+    ('javascript', 'JavaScript'),
+    ('html', 'HTML'),
+    ('css', 'CSS'),
+    ('bash', 'Bash/Shell'),
+    ('django', 'Django Template'),
+]

@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils import timezone
+from django.utils.timezone import localdate
 
 from wagtail.models import Page
 from wagtail.fields import StreamField
@@ -21,7 +21,7 @@ class Post(Page):
 
     publish_date = models.DateField(
         verbose_name="publish date",
-        default=timezone.now,
+        default=localdate,
     )
 
     category = models.CharField(
