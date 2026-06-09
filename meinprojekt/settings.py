@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     # Wagtail 必须添加这些 ↓
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
+    'wagtail.contrib.table_block',
     'wagtail.embeds',
     'wagtail.sites',
     'wagtail.users',
@@ -63,6 +64,8 @@ INSTALLED_APPS = [
     'wagtail',
     'modelcluster',
     'taggit',
+    'wagtailmarkdown',
+    
 
     # 您自己的 App
     'posts',

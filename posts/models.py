@@ -1,14 +1,37 @@
 from django.db import models
+from django.utils import timezone
+
 from wagtail.models import Page
 from wagtail.fields import StreamField
-from wagtail.blocks import RichTextBlock, RawHTMLBlock
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+# 1. 导入必要的 Panel
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel 
+
+from wagtail.blocks import (
+    RichTextBlock, 
+    RawHTMLBlock,  
+    BlockQuoteBlock,  # 2. 修正引用块的名称
+)
+
+# 3. 单独导入 TableBlock
+from wagtail.contrib.table_block.blocks import TableBlock
+
 from wagtail.images.blocks import ImageChooserBlock
+from wagtailmarkdown.blocks import MarkdownBlock
+
+from wagtail.embeds.blocks import EmbedBlock
+
+#from wagtailcodeblock.blocks import CodeBlock
+
+
 
 class Post(Page):
     """Wagtail 博客文章模型（支持 Raw HTML 块）"""
 
-    date = models.DateField("date published")
+    date = models.DateField(
+        verbose_name="发布日期",
+        default=timezone.now,
+    )
+    
     category = models.CharField(
         max_length=50,
         choices=[
@@ -18,6 +41,7 @@ class Post(Page):
         ],
         default='german-learning',
     )
+    
     featured_image = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
@@ -26,10 +50,16 @@ class Post(Page):
         related_name='+'
     )
     
-    # ← 这里改成 StreamField，支持 Raw HTML 块
     body = StreamField([
-        ('rich_text', RichTextBlock()),
-        ('raw_html', RawHTMLBlock()),      # ← 新增 Raw HTML 块
+        ('rich_text', RichTextBlock(label="Rich text", icon="doc-full")),
+        ('markdown', MarkdownBlock(label="Markdown", icon="code")),
+        # 如果没有安装代码块插件，建议先用 StructBlock 自己写一个，或者暂时注释掉：
+        #('code', CodeBlock(label="code", icon="code")),
+        ('image', ImageChooserBlock(label="image", icon="image")),
+        ('embed', EmbedBlock(label="media", icon="media")),
+        ('table', TableBlock(label="table", icon="table")),
+        ('quote', BlockQuoteBlock(label="quote", icon="openquote")), # 已修正为 BlockQuoteBlock
+        ('raw_html', RawHTMLBlock(label="Raw HTML", icon="code")),
     ], use_json_field=True, blank=True)
 
     content_panels = Page.content_panels + [

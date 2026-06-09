@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block title %}{{ self.title }}{% endblock %}
 
@@ -7,20 +7,20 @@
 <div class="container my-5">
     <div style="max-width: 760px; margin: 0 auto;">
 
-        <!-- 正文 -->
-        <div class="post-body" style="font-size: 1.13rem; line-height: 1.85; color: #222;">
-            {{ self.body }}
+        <!-- 文章标题（可选） -->
+        <h1 style="font-size: 2.4rem; margin-bottom: 1.5rem;">{{ self.title }}</h1>
+
+        <!-- 正文内容 -->
+        <div class="post-body prose prose-lg max-w-none" 
+             style="font-size: 1.13rem; line-height: 1.85; color: #222;">
+            
+            {% for block in self.body %}
+                {% include_block block %}
+            {% endfor %}
+
         </div>
 
         <hr class="my-5">
-
-        <!-- 返回按钮：居中 + 返回上一个页面 -->
-        <div class="text-center">
-            <a href="javascript:history.back()" 
-               class="btn btn-outline-secondary px-4 py-2">
-                ← Return
-            </a>
-        </div>
 
     </div>
 </div>

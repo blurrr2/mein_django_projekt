@@ -1,0 +1,6 @@
+{
+	"nodes":[
+		{"id":"b50e1bae80b3263d","x":-220,"y":200,"width":385,"height":790,"type":"text","text":"Sallys Journey\n├── Startseite\n│   ├── Navigationsleiste\n│   ├── Einleitungstexte \n│   └── Bilder \n└── Inhalte / Beiträge\n    ├── Deutsch lernen\n    ├── Deutschland verstehen\n    ├── Coding\n    └── Detailseite\n"}
+	],
+	"edges":[]
+}
